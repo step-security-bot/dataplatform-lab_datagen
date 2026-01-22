@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.11-slim@sha256:5be45dbade29bebd6886af6b438fd7e0b4eb7b611f39ba62b430263f82de36d2
 COPY --from=ghcr.io/astral-sh/uv:0.9.4 /uv /uvx /bin/
 
 ARG APPNAME=datagen

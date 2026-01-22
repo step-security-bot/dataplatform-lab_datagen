@@ -41,6 +41,9 @@ on:
 # permissions:
 #   pull-requests: read # allows SonarCloud to decorate PRs with analysis results
 
+permissions:
+  contents: read
+
 jobs:
   sonarcloud-analysis:
     permissions:
@@ -48,8 +51,13 @@ jobs:
     name: SonarCloud Analysis
     runs-on: ubuntu-latest
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        with:
+          egress-policy: audit
+
       - name: Analyze with SonarCloud
-        uses: SonarSource/sonarcloud-github-action@v5.0.0
+        uses: SonarSource/sonarcloud-github-action@ffc3010689be73b8e5ae0c57ce35968afd7909e8 # v5.0.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # Generate a token on Sonarcloud.io, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
         with:
