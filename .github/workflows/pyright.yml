@@ -21,8 +21,13 @@ jobs:
       matrix:
         python-version: ["3.11"]
     steps:
-      - uses: actions/checkout@v5
-      - uses: astral-sh/setup-uv@v3
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@20cf305ff2072d973412fa9b1e3a4f227bda3c76 # v2.14.0
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
+      - uses: astral-sh/setup-uv@caf0cab7a618c569241d31dcd442f54681755d39 # v3.2.4
       - name: Install librdkafka-dev
         run: sudo apt-get update && sudo apt-get install -y librdkafka-dev
       - name: Install dependencies
@@ -30,6 +35,6 @@ jobs:
       - run: python -m venv venv
       - run: |
           source ./venv/bin/activate
-      - uses: jakebailey/pyright-action@v2
+      - uses: jakebailey/pyright-action@6cabc0f01c4994be48fd45cd9dbacdd6e1ee6e5e # v2.3.3
         with:
           working-directory: "."
